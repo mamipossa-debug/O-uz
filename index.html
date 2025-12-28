@@ -3,104 +3,242 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sürpriz 🎁</title>
+  <title>Sürpriz 🎁 — Mutlu Yıllar</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#ff5d7a}
-    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:
-      radial-gradient(circle at 10% 10%, rgba(255,93,122,0.08), transparent 10%),
-      linear-gradient(180deg,#071026 0%, #071026 60%, #031220 100%);font-family:Inter,system-ui,Segoe UI,Arial;color:#fff}
-    .card{width:92vw;max-width:760px;padding:36px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 30px rgba(2,6,23,0.6);text-align:center;position:relative;overflow:hidden}
-    h1{margin:0 0 8px;font-size:2.2rem;letter-spacing:0.4px}
-    p.lead{margin:0 0 18px;color:#d1d5db}
+    :root{
+      --bg1: #071026;
+      --bg2: #031220;
+      --card:#07172a88;
+      --accent:#ff5d7a;
+      --accent-2:#ffd166;
+      --muted:#cbd5e1cc;
+    }
+    /* Reset */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Arial;
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,93,122,0.06), transparent 8%),
+        linear-gradient(180deg,var(--bg1) 0%, #07132a 40%, var(--bg2) 100%);
+      overflow:hidden;
+    }
+
+    /* Big decorative heart in background (center) */
+    .bg-heart{
+      position:fixed;
+      left:50%;
+      top:40%;
+      transform:translate(-50%,-50%) scale(1);
+      width:1100px;
+      height:1100px;
+      opacity:0.06;
+      z-index:0;
+      pointer-events:none;
+      filter: blur(14px);
+      animation: pulseHeart 5000ms infinite ease-in-out;
+    }
+    @keyframes pulseHeart{
+      0%{transform:translate(-50%,-50%) scale(1);opacity:0.06}
+      50%{transform:translate(-50%,-50%) scale(1.03);opacity:0.09}
+      100%{transform:translate(-50%,-50%) scale(1);opacity:0.06}
+    }
+
+    /* Card */
+    .card{
+      width:92vw;
+      max-width:880px;
+      padding:28px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:0 20px 60px rgba(2,6,23,0.6);
+      text-align:center;
+      position:relative;
+      z-index:2;
+      overflow:visible;
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    /* Top right year badge */
+    .year-badge{
+      position:absolute;
+      right:18px;
+      top:18px;
+      background:linear-gradient(90deg,var(--accent),#ff2a6b);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      box-shadow:0 6px 18px rgba(255,93,122,0.16);
+      color:white;
+      font-size:0.95rem;
+    }
+
+    h1{margin:8px 0 6px;font-size:2.2rem;letter-spacing:0.4px}
+    p.lead{margin:0 0 16px;color:var(--muted);font-size:1.05rem}
+
+    /* Heart + button row */
     .heart{
-      width:140px;height:140px;margin:18px auto 6px;position:relative;transform:scale(1);
-      transition:transform .25s ease;
+      width:120px;height:120px;margin:8px auto 6px;position:relative;transform:scale(1);transition:transform .25s ease;
     }
     .heart:before,.heart:after{
-      content:"";position:absolute;left:50px;top:0;width:50px;height:80px;background:linear-gradient(180deg,var(--accent),#ff2a6b);
+      content:"";position:absolute;left:40px;top:0;width:50px;height:80px;background:linear-gradient(180deg,var(--accent),#ff2a6b);
       border-radius:50px 50px 0 0;transform-origin:bottom center;
     }
     .heart:after{left:0;transform:rotate(-45deg)}
     .heart:before{left:40px;transform:rotate(45deg)}
-    button{background:var(--accent);border:0;padding:12px 20px;border-radius:12px;color:white;font-weight:600;font-size:1rem;cursor:pointer;box-shadow:0 6px 16px rgba(255,93,122,0.18)}
-    .secret{margin-top:18px;padding:16px;border-radius:12px;background:rgba(255,255,255,0.02);display:none}
-    .close{position:absolute;right:14px;top:12px;opacity:0.6;font-size:0.9rem}
-    .confetti-piece{position:absolute;width:10px;height:14px;opacity:0.95;border-radius:2px;will-change:transform,top,left}
-    footer{margin-top:18px;color:#9ca3af;font-size:0.86rem}
+
+    button{
+      background:linear-gradient(90deg,var(--accent),#ff2a6b);
+      border:0;padding:12px 20px;border-radius:12px;color:white;font-weight:700;font-size:1rem;cursor:pointer;
+      box-shadow:0 10px 30px rgba(255,93,122,0.16);
+      transition:transform .18s ease, box-shadow .18s ease, opacity .18s;
+    }
+    button:active{transform:translateY(2px)}
+    .secret{
+      margin-top:18px;padding:18px;border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:none;text-align:left;color:var(--muted);line-height:1.6;
+      max-height:60vh;overflow:auto;
+    }
+    .secret.show{display:block}
+
+    .secret .message{
+      color:#fff;
+      font-size:1.02rem;
+      white-space:pre-wrap;
+    }
+
+    footer{margin-top:12px;color:#9ca3af;font-size:0.86rem}
+
+    /* Countdown */
+    .countdown{
+      margin-top:8px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      font-weight:700;
+      color:var(--muted);
+    }
+    .countdown .item{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;min-width:56px}
+
+    /* Sparkle */
+    .sparkle{
+      position:absolute;
+      width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.9);
+      box-shadow:0 0 18px rgba(255,255,255,0.5);
+      opacity:0;pointer-events:none;
+      transform:translate(-50%,-50%) scale(0.6);
+    }
+    .sparkle.show{animation: sparkleAnim .9s ease forwards}
+    @keyframes sparkleAnim{
+      0%{opacity:1;transform:translate(-50%,-50%) scale(0.6)}
+      100%{opacity:0;transform:translate(-50%,-120%) scale(1.6)}
+    }
+
+    .fwk{position:fixed;left:0;top:0;pointer-events:none;z-index:3}
+
     /* small responsive */
-    @media (max-width:420px){.heart{width:110px;height:110px}h1{font-size:1.6rem}}
+    @media (max-width:520px){
+      h1{font-size:1.6rem}
+      .heart{width:86px;height:86px}
+      .card{padding:18px}
+      .secret{font-size:0.95rem}
+    }
   </style>
 </head>
 <body>
-  <div class="card" role="main" aria-label="Sürpriz kutusu">
-    <div class="close" id="closeBtn" title="Kapat" style="display:none">×</div>
-    <div class="heart" id="heart" aria-hidden="true"></div>
-   <h1>Mutlu Yıllar Sevgilim!</h1>
-    <p class="lead">Bu linki açtığın için teşekkür ederim. Hazır mısın?</p>
-    <button id="openBtn">Evet, bana göster!</button>
+  <!-- Background blurred heart -->
+  <svg class="bg-heart" viewBox="0 0 32 29.6" aria-hidden="true">
+    <path fill="url(#g1)" d="M23.6,0c-2.7,0-5,1.5-6.6,3.9C15.4,1.5,13.1,0,10.4,0C4.7,0,0,4.7,0,10.4
+      C0,18.9,16,29.6,16,29.6s16-10.7,16-19.2C32,4.7,27.3,0,23.6,0z"/>
+    <defs>
+      <linearGradient id="g1" x1="0" x2="1">
+        <stop offset="0" stop-color="#ff5d7a"/>
+        <stop offset="1" stop-color="#ffd166"/>
+      </linearGradient>
+    </defs>
+  </svg>
 
-    <div class="secret" id="secret">
-      <h2 style="margin:0 0 8px">Sana bir şey söylemek istiyorum…</h2>
-      <p style="margin:0 0 12px;font-size:1.05rem">Seninle bir yıl değil bir ömür
-        Yeni bir yıl yeni bir sayfa açılıyo önümüzde, bembeyaz. Bu sayfanın her satırını
+  <!-- Canvas layer for snow / hearts / confetti (placeholder) -->
+  <canvas id="effects-layer" aria-hidden="true"></canvas>
+
+  <div class="card" role="main" aria-label="Sürpriz kutusu">
+    <div class="year-badge" id="yearBadge" aria-hidden="true">2026</div>
+
+    <h1>Mutlu Yıllar</h1>
+    <p class="lead">Birlikte daha nice güzel sayfalar açalım — bugün küçük bir sürpriz var.</p>
+
+    <div class="heart" aria-hidden="true"></div>
+
+    <button id="toggleSecret" aria-expanded="false" aria-controls="secretArea">Sürprizi Aç</button>
+
+    <div id="secretArea" class="secret" role="region" aria-label="Gizli mesaj">
+      <div class="message">
+Seninle bir yıl değil bir ömür
+Yeni bir yıl yeni bir sayfa açılıyo önümüzde, bembeyaz. Bu sayfanın her satırını
 seninle mutluluğumuzla, yaşadıklarımızla, aşkımızla doldurmak istiyorum. Sen benim
 sadece sevgilim değil en güvenli yerim, huzur kaynağım bu dünya anlam yükleyen
 birisin. Her geçen yıl seni bana daha çok bağlıyor, anılarımız artıyor ve vazgeçilmez
 kılıyor. her yıl olduğu gibi bul yılda hep seninleyim bir adım arkanda her anında
-yanında❤️</p>
-      <p style="margin:0">— <strong>Ben</strong></p>
-      <footer>Bu linki paylaşma istersen dikkatli ol.</footer>
+yanında❤️
+      </div>
     </div>
+
+    <footer>Sevgilerle — Senin</footer>
   </div>
 
   <script>
-    // Basit konfeti fonksiyonu (kalp parçacıkları)
-    const colors = ['#ff5d7a','#ffd166','#6ee7b7','#60a5fa','#c084fc'];
-    function makeConfetti(x,y){
-      const n = 24;
-      for(let i=0;i<n;i++){
-        const el = document.createElement('div');
-        el.className = 'confetti-piece';
-        const w=8+Math.random()*8, h=10+Math.random()*10;
-        el.style.width = w+'px'; el.style.height = h+'px';
-        el.style.left = (x - w/2) + 'px';
-        el.style.top = (y - h/2) + 'px';
-        el.style.background = colors[Math.floor(Math.random()*colors.length)];
-        el.style.transform = `rotate(${Math.random()*360}deg)`;
-        document.body.appendChild(el);
-        // animate
-        const dx = (Math.random()-0.5)*600;
-        const dy = 600 + Math.random()*200;
-        const rot = (Math.random()-0.5)*720;
-        el.animate([
-          { transform: `translate(0px,0px) rotate(0deg)`, opacity:1 },
-          { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0.1 }
-        ], {
-          duration: 1200 + Math.random()*1000,
-          easing: 'cubic-bezier(.17,.67,.4,1)'
-        });
-        setTimeout(()=>el.remove(), 2400);
+    // Yılı otomatik güncelle
+    (function(){
+      const y = new Date().getFullYear();
+      const badge = document.getElementById('yearBadge');
+      if (badge) badge.textContent = y;
+    })();
+
+    // Sürprizi aç / kapat
+    (function(){
+      const btn = document.getElementById('toggleSecret');
+      const secret = document.getElementById('secretArea');
+      const heart = document.querySelector('.heart');
+
+      function toggle(){
+        const open = secret.classList.toggle('show');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Sürprizi Kapat' : 'Sürprizi Aç';
+        // küçük animasyon
+        if(open){
+          heart.style.transform = 'scale(1.06)';
+          setTimeout(()=> heart.style.transform = 'scale(1)', 600);
+        } else {
+          heart.style.transform = 'scale(0.98)';
+          setTimeout(()=> heart.style.transform = 'scale(1)', 200);
+        }
       }
-    }
 
-    const openBtn = document.getElementById('openBtn');
-    const secret = document.getElementById('secret');
-    const heart = document.getElementById('heart');
+      btn.addEventListener('click', toggle);
+      btn.addEventListener('keyup', (e)=> { if(e.key === 'Enter' || e.key === ' ') toggle(); });
+    })();
 
-    openBtn.addEventListener('click', e=>{
-      secret.style.display = 'block';
-      heart.style.transform = 'scale(1.08)';
-      makeConfetti(window.innerWidth/2, 180);
-      // küçük titreşim
-      document.body.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}],{duration:420,iterations:1});
-    });
-
-    // Fareyle kalbin üzerine gelince konfeti
-    heart.addEventListener('mouseenter', e=>{
-      makeConfetti(e.clientX, e.clientY);
-      heart.style.transform = 'scale(1.08)';
-    });
-    heart.addEventListener('mouseleave', ()=>heart.style.transform = 'scale(1)');
+    // Basit resize ile canvas boyutlandırma (efekt eklemek istersen buraya ekleyebilirsin)
+    (function(){
+      const canvas = document.getElementById('effects-layer');
+      function fit(){
+        canvas.width = window.innerWidth * devicePixelRatio;
+        canvas.height = window.innerHeight * devicePixelRatio;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        const ctx = canvas.getContext('2d');
+        if(ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
+      }
+      window.addEventListener('resize', fit);
+      fit();
+    })();
   </script>
 </body>
 </html>

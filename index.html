@@ -3,504 +3,110 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sürpriz 🎁 — Mutlu Yıllar</title>
+  <title>Test — Efekt & Debug</title>
   <style>
-    :root{
-      --bg1: #071026;
-      --bg2: #031220;
-      --accent:#ff5d7a;
-      --muted:#cbd5e1cc;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family:Inter,system-ui,Segoe UI,Arial;
-      color:#fff;
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:
-        radial-gradient(circle at 10% 10%, rgba(255,93,122,0.06), transparent 8%),
-        linear-gradient(180deg,var(--bg1) 0%, #07132a 40%, var(--bg2) 100%);
-      overflow:hidden;
-    }
-
-    /* Big decorative heart in background (center) */
-    .bg-heart{
-      position:fixed;
-      left:50%;
-      top:40%;
-      transform:translate(-50%,-50%) scale(1);
-      width:1100px;
-      height:1100px;
-      opacity:0.06;
-      z-index:0;
-      pointer-events:none;
-      filter: blur(14px);
-      animation: pulseHeart 5000ms infinite ease-in-out;
-    }
-    @keyframes pulseHeart{
-      0%{transform:translate(-50%,-50%) scale(1);opacity:0.06}
-      50%{transform:translate(-50%,-50%) scale(1.03);opacity:0.09}
-      100%{transform:translate(-50%,-50%) scale(1);opacity:0.06}
-    }
-
-    /* String lights (üstte asılı süs) */
-    .string-lights{
-      position:fixed;
-      left:0;
-      right:0;
-      top:6px;
-      height:70px;
-      pointer-events:none;
-      z-index:0; /* bg-heart z-index 0, canvas 1, card 2 */
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      overflow:visible;
-    }
-    .lights-row{
-      position:relative;
-      width:92vw;
-      max-width:880px;
-      height:40px;
-      transform:translateY(-8px);
-    }
-    .bulb{
-      position:absolute;
-      top:8px;
-      width:14px;
-      height:18px;
-      border-radius:6px;
-      box-shadow:0 6px 14px rgba(0,0,0,0.4), 0 0 14px currentColor;
-      transform-origin:center;
-      opacity:0.95;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.3));
-      animation: glow 1600ms infinite ease-in-out;
-    }
-    .bulb::after{
-      content:'';
-      position:absolute;
-      left:50%;top:4px;
-      width:6px;height:6px;border-radius:50%;
-      transform:translateX(-50%);
-      background:rgba(255,255,255,0.7);
-      opacity:0.6;
-    }
-    @keyframes glow{
-      0%{transform:scale(0.95); filter: drop-shadow(0 0 6px rgba(0,0,0,0.2));}
-      50%{transform:scale(1.06); opacity:1}
-      100%{transform:scale(0.95)}
-    }
-
-    /* Card */
-    .card{
-      width:92vw;
-      max-width:880px;
-      padding:28px;
-      border-radius:20px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow:0 20px 60px rgba(2,6,23,0.6);
-      text-align:center;
-      position:relative;
-      z-index:2;
-      overflow:visible;
-      backdrop-filter: blur(6px) saturate(120%);
-    }
-
-    /* Top right year badge */
-    .year-badge{
-      position:absolute;
-      right:18px;
-      top:18px;
-      background:linear-gradient(90deg,var(--accent),#ff2a6b);
-      padding:8px 12px;
-      border-radius:999px;
-      font-weight:700;
-      box-shadow:0 6px 18px rgba(255,93,122,0.16);
-      color:white;
-      font-size:0.95rem;
-    }
-
-    h1{margin:8px 0 6px;font-size:2.2rem;letter-spacing:0.4px}
-    p.lead{margin:0 0 16px;color:var(--muted);font-size:1.05rem}
-
-    /* Heart + button row */
-    .heart{
-      width:120px;height:120px;margin:8px auto 6px;position:relative;transform:scale(1);transition:transform .25s ease;
-    }
-    .heart:before,.heart:after{
-      content:"";position:absolute;left:40px;top:0;width:50px;height:80px;background:linear-gradient(180deg,var(--accent),#ff2a6b);
-      border-radius:50px 50px 0 0;transform-origin:bottom center;
-    }
-    .heart:after{left:0;transform:rotate(-45deg)}
-    .heart:before{left:40px;transform:rotate(45deg)}
-
-    button{
-      background:linear-gradient(90deg,var(--accent),#ff2a6b);
-      border:0;padding:12px 20px;border-radius:12px;color:white;font-weight:700;font-size:1rem;cursor:pointer;
-      box-shadow:0 10px 30px rgba(255,93,122,0.16);
-      transition:transform .18s ease, box-shadow .18s ease, opacity .18s;
-    }
-    button:active{transform:translateY(2px)}
-    .secret{
-      margin-top:18px;padding:18px;border-radius:14px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      display:none;text-align:left;color:var(--muted);line-height:1.6;
-      max-height:60vh;overflow:auto;
-    }
+    body{font-family:Arial,Helvetica,sans-serif;background:#071026;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:12px;text-align:center;max-width:520px;width:90%}
+    #effects-layer{position:fixed;inset:0;z-index:0;pointer-events:none}
+    button{margin-top:12px;padding:10px 16px;border-radius:8px;border:0;background:#ff5d7a;color:#fff;cursor:pointer}
+    .secret{display:none;margin-top:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;color:#fff}
     .secret.show{display:block}
-
-    .secret .message{
-      color:#fff;
-      font-size:1.02rem;
-      white-space:pre-wrap;
-      min-height:4.2rem;
-    }
-
-    footer{margin-top:12px;color:#9ca3af;font-size:0.86rem}
-
-    /* Floating hearts created dynamically */
-    .floating-heart{
-      position:fixed;
-      pointer-events:none;
-      z-index:4;
-      font-size:18px;
-      transform-origin:center;
-      will-change:transform,opacity;
-      user-select:none;
-      text-shadow: 0 2px 6px rgba(0,0,0,0.35);
-      animation: heartRise linear forwards;
-    }
-    @keyframes heartRise {
-      0% { transform: translateY(0) scale(0.9) rotate(0deg); opacity:1; }
-      100% { transform: translateY(-240px) scale(1.15) rotate(30deg); opacity:0; }
-    }
-
-    /* Snow canvas sits behind card but above bg */
-    #effects-layer{position:fixed;inset:0;z-index:1;pointer-events:none}
-
-    /* small responsive */
-    @media (max-width:520px){
-      h1{font-size:1.6rem}
-      .heart{width:86px;height:86px}
-      .card{padding:18px}
-      .secret{font-size:0.95rem}
-      .lights-row{width:96vw}
-    }
   </style>
 </head>
 <body>
-  <!-- Background blurred heart -->
-  <svg class="bg-heart" viewBox="0 0 32 29.6" aria-hidden="true">
-    <path fill="url(#g1)" d="M23.6,0c-2.7,0-5,1.5-6.6,3.9C15.4,1.5,13.1,0,10.4,0C4.7,0,0,4.7,0,10.4
-      C0,18.9,16,29.6,16,29.6s16-10.7,16-19.2C32,4.7,27.3,0,23.6,0z"/>
-    <defs>
-      <linearGradient id="g1" x1="0" x2="1">
-        <stop offset="0" stop-color="#ff5d7a"/>
-        <stop offset="1" stop-color="#ffd166"/>
-      </linearGradient>
-    </defs>
-  </svg>
-
-  <!-- String lights (üstte asılı) -->
-  <div class="string-lights" aria-hidden="true">
-    <div class="lights-row" id="lightsRow">
-      <!-- Bulb positions will be generated by JS -->
-    </div>
-  </div>
-
-  <!-- Canvas layer for snow / stars / fireworks -->
   <canvas id="effects-layer" aria-hidden="true"></canvas>
 
-  <div class="card" role="main" aria-label="Sürpriz kutusu">
-    <div class="year-badge" id="yearBadge" aria-hidden="true">2026</div>
-
-    <h1>Mutlu Yıllar</h1>
-    <p class="lead">Birlikte daha nice güzel sayfalar açalım — bugün küçük bir sürpriz var.</p>
-
-    <div class="heart" aria-hidden="true"></div>
-
-    <button id="toggleSecret" aria-expanded="false" aria-controls="secretArea">Sürprizi Aç</button>
-
-    <div id="secretArea" class="secret" role="region" aria-label="Gizli mesaj">
-      <div class="message">
-Seninle bir yıl değil bir ömür
-Yeni bir yıl yeni bir sayfa açılıyo önümüzde, bembeyaz. Bu sayfanın her satırını
-seninle mutluluğumuzla, yaşadıklarımızla, aşkımızla doldurmak istiyorum. Sen benim
-sadece sevgilim değil en güvenli yerim, huzur kaynağım bu dünya anlam yükleyen
-birisin. Her geçen yıl seni bana daha çok bağlıyor, anılarımız artıyor ve vazgeçilmez
-kılıyor. her yıl olduğu gibi bul yılda hep seninleyim bir adım arkanda her anında
-yanında❤️
-      </div>
-    </div>
-
-    <footer>Sevgilerle — Senin</footer>
+  <div class="card">
+    <h2>Debug Test</h2>
+    <p>Bu sayfa, efektlerin çalışıp çalışmadığını kontrol etmek için basit test içerir.</p>
+    <button id="toggleSecret">Sürprizi Aç / Kapat</button>
+    <div id="secretArea" class="secret" role="region">Gizli mesaj burada görünecek.</div>
+    <p style="font-size:12px;opacity:.7;margin-top:8px">DevTools → Console (F12) açıkken çalıştır.</p>
   </div>
 
   <script>
-    // --- Genel yardımcılar & setup ---
-    const canvas = document.getElementById('effects-layer');
-    let ctx = null;
-    let dpr = window.devicePixelRatio || 1;
+    console.log('Script başlıyor');
 
-    function fitCanvas(){
-      dpr = window.devicePixelRatio || 1;
-      canvas.width = Math.floor(window.innerWidth * dpr);
-      canvas.height = Math.floor(window.innerHeight * dpr);
-      canvas.style.width = window.innerWidth + 'px';
-      canvas.style.height = window.innerHeight + 'px';
-      ctx = canvas.getContext && canvas.getContext('2d');
-      if(ctx) ctx.setTransform(dpr,0,0,dpr,0,0);
-    }
-    window.addEventListener('resize', fitCanvas);
-    fitCanvas();
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOMContentLoaded fired');
 
-    // --- String lights generation ---
-    (function buildLights(){
-      const row = document.getElementById('lightsRow');
-      if(!row) return;
-      const bulbs = 12;
-      for(let i=0;i<bulbs;i++){
-        const b = document.createElement('div');
-        b.className = 'bulb';
-        // color choices for festive + love tones
-        const colors = ['#ffd166','#ff5d7a','#ff8aa3','#ffd1a9','#fff3a6'];
-        b.style.background = colors[i % colors.length];
-        const left = (i/(bulbs-1))*100;
-        b.style.left = `calc(${left}% - 8px)`;
-        // phase offset for glow
-        b.style.animationDelay = `${(i%5)*140}ms`;
-        row.appendChild(b);
+      const canvas = document.getElementById('effects-layer');
+      if(!canvas) { console.error('Canvas bulunamadı'); return; }
+      const ctx = canvas.getContext && canvas.getContext('2d');
+      if(!ctx) { console.error('2D context alınamadı'); return; }
+
+      function fit(){
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(window.innerWidth * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        console.log('Canvas boyutlandırıldı', canvas.width, canvas.height, 'dpr', dpr);
       }
-    })();
+      fit();
+      window.addEventListener('resize', fit);
 
-    // --- Snow particles ---
-    let snow = [];
-    function initSnow(count = Math.max(60, Math.floor(window.innerWidth / 12))){
-      snow = [];
-      for(let i=0;i<count;i++){
-        snow.push({
+      // küçük kar parçacıkları basit animasyon
+      const particles = [];
+      for(let i=0;i<80;i++){
+        particles.push({
           x: Math.random()*window.innerWidth,
           y: Math.random()*window.innerHeight,
-          r: Math.random()*2.6 + 0.8,
-          vy: Math.random()*0.6 + 0.15,
-          vx: (Math.random()-0.5)*0.4,
-          osc: Math.random()*Math.PI*2,
-          oSpeed: (Math.random()*0.02)+0.005,
-          a: Math.random()*0.6 + 0.25
+          r: Math.random()*2+0.6,
+          vy: Math.random()*0.6+0.2,
+          vx: (Math.random()-0.5)*0.4
         });
       }
-    }
-    initSnow();
-
-    // --- Twinkling background lights (bokeh/stars) ---
-    let twinkles = [];
-    function initTwinkles(count = Math.max(24, Math.floor(window.innerWidth/90))){
-      twinkles = [];
-      for(let i=0;i<count;i++){
-        twinkles.push({
-          x: Math.random()*window.innerWidth,
-          y: Math.random()*window.innerHeight*0.6, // mostly upper half
-          baseR: Math.random()*1.8 + 0.6,
-          amp: Math.random()*0.7 + 0.3,
-          speed: Math.random()*0.006 + 0.002,
-          phase: Math.random()*Math.PI*2,
-          hue: 40 + Math.random()*320
-        });
-      }
-    }
-    initTwinkles();
-
-    // --- Fireworks (canvas-based) ---
-    let fireworks = [];
-    function spawnFirework(x, y, count=32){
-      const colors = ['#ff5d7a','#ffd166','#90cdf4','#6ee7b7','#f093ff','#ffb1e6'];
-      for(let i=0;i<count;i++){
-        const angle = Math.random()*Math.PI*2;
-        const speed = Math.random()*4 + 1.6;
-        fireworks.push({
-          x, y,
-          vx: Math.cos(angle)*speed,
-          vy: Math.sin(angle)*speed,
-          life: 60 + Math.random()*40,
-          size: Math.random()*2 + 1.2,
-          color: colors[Math.floor(Math.random()*colors.length)]
-        });
-      }
-    }
-
-    // occasionally auto spawn fireworks near top-right/left
-    let lastFireworkTime = 0;
-
-    // --- Main animation loop (draw twinkles, snow, fireworks) ---
-    let lastTs = performance.now();
-    function animateScene(ts){
-      if(!ctx){ requestAnimationFrame(animateScene); return; }
-      const dt = Math.min(40, ts - lastTs);
-      lastTs = ts;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-
-      // draw twinkles (bokeh)
-      for(const t of twinkles){
-        t.phase += t.speed * dt;
-        const a = 0.35 + Math.sin(t.phase)*t.amp*0.4; // alpha
-        ctx.beginPath();
-        const g = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.baseR*6);
-        g.addColorStop(0, `hsla(${t.hue},90%,85%,${a})`);
-        g.addColorStop(1, `hsla(${t.hue},90%,60%,0)`);
-        ctx.fillStyle = g;
-        ctx.fillRect(t.x - t.baseR*6, t.y - t.baseR*6, t.baseR*12, t.baseR*12);
-      }
-
-      // snow
-      const w = window.innerWidth, h = window.innerHeight;
-      for(const p of snow){
-        p.y += p.vy * (dt/16);
-        p.x += p.vx * (dt/16) + Math.sin(p.osc) * 0.3;
-        p.osc += p.oSpeed * (dt/16);
-        if(p.y > h + 10){ p.y = -10; p.x = Math.random()*w; }
-        if(p.x > w + 10) p.x = -10;
-        if(p.x < -10) p.x = w + 10;
-        ctx.globalAlpha = p.a;
-        ctx.beginPath();
+      let rafId = null;
+      function frame(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
         ctx.fillStyle = '#fff';
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-
-      // fireworks update & draw
-      for(let i = fireworks.length-1; i>=0; i--){
-        const f = fireworks[i];
-        f.vy += 0.08 * (dt/16); // gravity
-        f.x += f.vx * (dt/16);
-        f.y += f.vy * (dt/16);
-        f.life -= (dt/16);
-        ctx.globalAlpha = Math.max(0, Math.min(1, f.life/80));
-        ctx.fillStyle = f.color;
-        ctx.beginPath();
-        ctx.arc(f.x, f.y, f.size, 0, Math.PI*2);
-        ctx.fill();
-        if(f.life <= 0){
-          fireworks.splice(i,1);
+        const w = window.innerWidth, h = window.innerHeight;
+        for(const p of particles){
+          p.y += p.vy;
+          p.x += p.vx;
+          if(p.y > h+10){ p.y = -10; p.x = Math.random()*w; }
+          if(p.x > w+10) p.x = -10;
+          if(p.x < -10) p.x = w+10;
+          ctx.globalAlpha = 0.85;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          ctx.fill();
         }
+        ctx.globalAlpha = 1;
+        rafId = requestAnimationFrame(frame);
       }
-      ctx.globalAlpha = 1;
+      rafId = requestAnimationFrame(frame);
+      console.log('Kar animasyonu başlatıldı');
 
-      // auto spawn random fireworks every few seconds
-      if(ts - lastFireworkTime > 2200 + Math.random()*2400){
-        lastFireworkTime = ts;
-        const fx = Math.random() * window.innerWidth * 0.8 + window.innerWidth*0.1;
-        const fy = Math.random() * window.innerHeight * 0.35 + 40;
-        spawnFirework(fx, fy, 26 + Math.floor(Math.random()*18));
-      }
-
-      requestAnimationFrame(animateScene);
-    }
-    requestAnimationFrame(animateScene);
-
-    // --- Year badge auto-update ---
-    (function(){
-      const y = new Date().getFullYear();
-      const badge = document.getElementById('yearBadge');
-      if (badge) badge.textContent = y;
-    })();
-
-    // --- Floating hearts (DOM-based) ---
-    function spawnHeartsBurst(x, y, count = 18){
-      const colors = ['#ff5d7a','#ff8aa3','#ffd166','#ffb1e6','#ff6f91'];
-      for(let i=0;i<count;i++){
-        const el = document.createElement('div');
-        el.className = 'floating-heart';
-        el.textContent = '❤';
-        const size = Math.random() * 18 + 12;
-        el.style.fontSize = size + 'px';
-        el.style.left = (x + (Math.random()-0.5) * 120) + 'px';
-        el.style.top = (y + (Math.random()-0.5) * 40) + 'px';
-        el.style.color = colors[Math.floor(Math.random()*colors.length)];
-        const dur = 1100 + Math.random() * 1000;
-        el.style.animationDuration = dur + 'ms';
-        const dx = (Math.random()-0.5) * 90;
-        el.style.transform = `translateX(${dx}px) translateY(0) scale(${0.9 + Math.random()*0.6}) rotate(${(Math.random()-0.5)*40}deg)`;
-        document.body.appendChild(el);
-        el.addEventListener('animationend', () => el.remove());
-      }
-    }
-
-    // --- Typewriter + toggle (korundu) ---
-    (function(){
+      // buton ve gizli alan
       const btn = document.getElementById('toggleSecret');
       const secret = document.getElementById('secretArea');
-      const heart = document.querySelector('.heart');
-      const messageEl = secret.querySelector('.message');
-      const originalText = messageEl.textContent.trim();
-      let typingTimer = null;
-
-      function typeWriter(text, speed = 22){
-        clearInterval(typingTimer);
-        messageEl.textContent = '';
-        let i = 0;
-        return new Promise(resolve => {
-          typingTimer = setInterval(() => {
-            messageEl.textContent += text.charAt(i);
-            i++;
-            messageEl.parentElement.scrollTop = messageEl.parentElement.scrollHeight;
-            if(i >= text.length){
-              clearInterval(typingTimer);
-              typingTimer = null;
-              resolve();
-            }
-          }, speed);
-        });
-      }
-
-      async function toggle(){
+      if(!btn || !secret){ console.error('Buton veya gizli alan bulunamadı'); return; }
+      btn.addEventListener('click', () => {
         const open = secret.classList.toggle('show');
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        btn.textContent = open ? 'Sürprizi Kapat' : 'Sürprizi Aç';
-
+        console.log('Butona tıklandı — open:', open);
         if(open){
-          heart.style.transform = 'scale(1.06)';
-          setTimeout(()=> heart.style.transform = 'scale(1)', 600);
-
-          // hearts burst
-          const rect = document.querySelector('.card').getBoundingClientRect();
-          const cx = rect.left + rect.width/2;
-          const cy = rect.top + rect.height/2 - 20;
-          spawnHeartsBurst(cx, cy, 26);
-
-          // a couple of small fireworks around card
-          spawnFirework(cx - 120, cy - 40, 18);
-          spawnFirework(cx + 80, cy - 60, 18);
-
-          // typewriter
-          await typeWriter(originalText, 20);
-
-          secret.setAttribute('tabindex','-1');
-          secret.focus({preventScroll:true});
-        } else {
-          if(typingTimer) { clearInterval(typingTimer); typingTimer = null; }
-          messageEl.textContent = originalText;
+          // yüzen kalp (DOM) örneği
+          const heart = document.createElement('div');
+          heart.textContent = '❤';
+          heart.style.position = 'fixed';
+          heart.style.left = (window.innerWidth/2 + (Math.random()-0.5)*120) + 'px';
+          heart.style.top = (window.innerHeight/2 + (Math.random()-0.5)*40) + 'px';
+          heart.style.fontSize = (12 + Math.random()*20) + 'px';
+          heart.style.zIndex = 3;
+          heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+          document.body.appendChild(heart);
+          requestAnimationFrame(() => {
+            heart.style.transform = 'translateY(-220px) scale(1.2)';
+            heart.style.opacity = '0';
+          });
+          setTimeout(()=> heart.remove(), 1100);
         }
-      }
+      });
 
-      btn.addEventListener('click', toggle);
-      btn.addEventListener('keyup', (e)=> { if(e.key === 'Enter' || e.key === ' ') toggle(); });
-    })();
-
-    // adjust counts on resize
-    window.addEventListener('resize', () => {
-      initSnow();
-      initTwinkles();
-      fitCanvas();
-    });
-    window.addEventListener('orientationchange', () => {
-      initSnow();
-      initTwinkles();
-      fitCanvas();
+      console.log('Event listenerlar eklendi, test hazır.');
     });
   </script>
 </body>

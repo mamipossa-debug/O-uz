@@ -112,6 +112,7 @@
       color:#fff;
       font-size:1.02rem;
       white-space:pre-wrap;
+      min-height:4.2rem;
     }
 
     footer{margin-top:12px;color:#9ca3af;font-size:0.86rem}
@@ -165,7 +166,7 @@
     </defs>
   </svg>
 
-  <!-- Canvas layer for snow / hearts / confetti (placeholder) -->
+  <!-- Canvas layer for snow / hearts / confetti -->
   <canvas id="effects-layer" aria-hidden="true"></canvas>
 
   <div class="card" role="main" aria-label="Sürpriz kutusu">
@@ -194,6 +195,21 @@ yanında❤️
   </div>
 
   <script>
+    // --- Yardımcı: canvas boyutlandırma ---
+    const canvas = document.getElementById('effects-layer');
+    const ctx = canvas.getContext && canvas.getContext('2d');
+    function fitCanvas(){
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = Math.floor(window.innerWidth * dpr);
+      canvas.height = Math.floor(window.innerHeight * dpr);
+      canvas.style.width = window.innerWidth + 'px';
+      canvas.style.height = window.innerHeight + 'px';
+      if (ctx) ctx.setTransform(dpr,0,0,dpr,0,0);
+      if (ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
+    }
+    window.addEventListener('resize', fitCanvas);
+    fitCanvas();
+
     // Yılı otomatik güncelle
     (function(){
       const y = new Date().getFullYear();
@@ -201,44 +217,23 @@ yanında❤️
       if (badge) badge.textContent = y;
     })();
 
-    // Sürprizi aç / kapat
+    // Sürprizi aç / kapat + typewriter + konfeti
     (function(){
       const btn = document.getElementById('toggleSecret');
       const secret = document.getElementById('secretArea');
       const heart = document.querySelector('.heart');
+      const messageEl = secret.querySelector('.message');
+      const originalText = messageEl.textContent.trim();
+      let typingTimer = null;
+      let animFrame = null;
 
-      function toggle(){
-        const open = secret.classList.toggle('show');
-        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-        btn.textContent = open ? 'Sürprizi Kapat' : 'Sürprizi Aç';
-        // küçük animasyon
-        if(open){
-          heart.style.transform = 'scale(1.06)';
-          setTimeout(()=> heart.style.transform = 'scale(1)', 600);
-        } else {
-          heart.style.transform = 'scale(0.98)';
-          setTimeout(()=> heart.style.transform = 'scale(1)', 200);
-        }
-      }
-
-      btn.addEventListener('click', toggle);
-      btn.addEventListener('keyup', (e)=> { if(e.key === 'Enter' || e.key === ' ') toggle(); });
-    })();
-
-    // Basit resize ile canvas boyutlandırma (efekt eklemek istersen buraya ekleyebilirsin)
-    (function(){
-      const canvas = document.getElementById('effects-layer');
-      function fit(){
-        canvas.width = window.innerWidth * devicePixelRatio;
-        canvas.height = window.innerHeight * devicePixelRatio;
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
-        const ctx = canvas.getContext('2d');
-        if(ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
-      }
-      window.addEventListener('resize', fit);
-      fit();
-    })();
-  </script>
-</body>
-</html>
+      function playConfetti(duration = 1200){
+        if(!ctx) return;
+        const colors = ['#ff5d7a','#ffd166','#6ee7b7','#90cdf4','#f093ff'];
+        const particles = [];
+        const count = 45;
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        for(let i=0;i<count;i++){
+          particles.push({
+            x: w/2 + (Math.random()-0.5)*120

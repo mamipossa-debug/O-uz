@@ -1,5 +1,113 @@
-console.log('DOM hazır mı?', document.readyState);
-console.log('canvas var mı?', !!document.getElementById('effects-layer'));
-const c = document.getElementById('effects-layer');
-console.log('2D context elde ediliyor mu?', !!(c && c.getContext && c.getContext('2d')));
-console.log('toggle buton var mı?', !!document.getElementById('toggleSecret'));
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Test — Efekt & Debug</title>
+  <style>
+    body{font-family:Arial,Helvetica,sans-serif;background:#071026;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:12px;text-align:center;max-width:520px;width:90%}
+    #effects-layer{position:fixed;inset:0;z-index:0;pointer-events:none}
+    button{margin-top:12px;padding:10px 16px;border-radius:8px;border:0;background:#ff5d7a;color:#fff;cursor:pointer}
+    .secret{display:none;margin-top:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;color:#fff}
+    .secret.show{display:block}
+  </style>
+</head>
+<body>
+  <canvas id="effects-layer" aria-hidden="true"></canvas>
+
+  <div class="card">
+    <h2>Debug Test</h2>
+    <p>Bu sayfa, efektlerin çalışıp çalışmadığını kontrol etmek için basit test içerir.</p>
+    <button id="toggleSecret">Sürprizi Aç / Kapat</button>
+    <div id="secretArea" class="secret" role="region">Gizli mesaj burada görünecek.</div>
+    <p style="font-size:12px;opacity:.7;margin-top:8px">DevTools → Console (F12) açıkken çalıştır.</p>
+  </div>
+
+  <script>
+    console.log('Script başlıyor');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('DOMContentLoaded fired');
+
+      const canvas = document.getElementById('effects-layer');
+      if(!canvas) { console.error('Canvas bulunamadı'); return; }
+      const ctx = canvas.getContext && canvas.getContext('2d');
+      if(!ctx) { console.error('2D context alınamadı'); return; }
+
+      function fit(){
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = Math.floor(window.innerWidth * dpr);
+        canvas.height = Math.floor(window.innerHeight * dpr);
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        console.log('Canvas boyutlandırıldı', canvas.width, canvas.height, 'dpr', dpr);
+      }
+      fit();
+      window.addEventListener('resize', fit);
+
+      // küçük kar parçacıkları basit animasyon
+      const particles = [];
+      for(let i=0;i<80;i++){
+        particles.push({
+          x: Math.random()*window.innerWidth,
+          y: Math.random()*window.innerHeight,
+          r: Math.random()*2+0.6,
+          vy: Math.random()*0.6+0.2,
+          vx: (Math.random()-0.5)*0.4
+        });
+      }
+      let rafId = null;
+      function frame(){
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        ctx.fillStyle = '#fff';
+        const w = window.innerWidth, h = window.innerHeight;
+        for(const p of particles){
+          p.y += p.vy;
+          p.x += p.vx;
+          if(p.y > h+10){ p.y = -10; p.x = Math.random()*w; }
+          if(p.x > w+10) p.x = -10;
+          if(p.x < -10) p.x = w+10;
+          ctx.globalAlpha = 0.85;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        rafId = requestAnimationFrame(frame);
+      }
+      rafId = requestAnimationFrame(frame);
+      console.log('Kar animasyonu başlatıldı');
+
+      // buton ve gizli alan
+      const btn = document.getElementById('toggleSecret');
+      const secret = document.getElementById('secretArea');
+      if(!btn || !secret){ console.error('Buton veya gizli alan bulunamadı'); return; }
+      btn.addEventListener('click', () => {
+        const open = secret.classList.toggle('show');
+        console.log('Butona tıklandı — open:', open);
+        if(open){
+          // yüzen kalp (DOM) örneği
+          const heart = document.createElement('div');
+          heart.textContent = '❤';
+          heart.style.position = 'fixed';
+          heart.style.left = (window.innerWidth/2 + (Math.random()-0.5)*120) + 'px';
+          heart.style.top = (window.innerHeight/2 + (Math.random()-0.5)*40) + 'px';
+          heart.style.fontSize = (12 + Math.random()*20) + 'px';
+          heart.style.zIndex = 3;
+          heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
+          document.body.appendChild(heart);
+          requestAnimationFrame(() => {
+            heart.style.transform = 'translateY(-220px) scale(1.2)';
+            heart.style.opacity = '0';
+          });
+          setTimeout(()=> heart.remove(), 1100);
+        }
+      });
+
+      console.log('Event listenerlar eklendi, test hazır.');
+    });
+  </script>
+</body>
+</html>

@@ -3,111 +3,231 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Test — Efekt & Debug</title>
+  <title>Sürpriz 🎁 — Mutlu Yıllar</title>
   <style>
-    body{font-family:Arial,Helvetica,sans-serif;background:#071026;color:#fff;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
-    .card{background:rgba(255,255,255,0.03);padding:20px;border-radius:12px;text-align:center;max-width:520px;width:90%}
-    #effects-layer{position:fixed;inset:0;z-index:0;pointer-events:none}
-    button{margin-top:12px;padding:10px 16px;border-radius:8px;border:0;background:#ff5d7a;color:#fff;cursor:pointer}
-    .secret{display:none;margin-top:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;color:#fff}
+    :root{
+      --bg1: #071026;
+      --bg2: #031220;
+      --accent:#ff5d7a;
+      --muted:#cbd5e1cc;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,Segoe UI,Arial;
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255,93,122,0.06), transparent 8%),
+        linear-gradient(180deg,var(--bg1) 0%, #07132a 40%, var(--bg2) 100%);
+      overflow:hidden;
+    }
+
+    .card{
+      width:92vw;max-width:880px;padding:28px;border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:0 20px 60px rgba(2,6,23,0.6);text-align:center;position:relative;z-index:2;
+    }
+    .year-badge{position:absolute;right:18px;top:18px;background:linear-gradient(90deg,var(--accent),#ff2a6b);padding:8px 12px;border-radius:999px;font-weight:700;color:white}
+    h1{margin:8px 0 6px}
+    .lead{color:var(--muted)}
+    .heart{width:120px;height:120px;margin:8px auto 6px}
+    button{background:linear-gradient(90deg,var(--accent),#ff2a6b);border:0;padding:12px 20px;border-radius:12px;color:white;cursor:pointer}
+    .secret{margin-top:18px;padding:18px;border-radius:14px;background:rgba(255,255,255,0.02);display:none;color:var(--muted);line-height:1.6;max-height:60vh;overflow:auto}
     .secret.show{display:block}
+    .secret .message{color:#fff;white-space:pre-wrap}
+    #effects-layer{position:fixed;inset:0;z-index:1;pointer-events:none}
+    .floating-heart{position:fixed;pointer-events:none;z-index:4;font-size:18px;transform-origin:center;will-change:transform,opacity;user-select:none;text-shadow:0 2px 6px rgba(0,0,0,0.35);animation: heartRise linear forwards}
+    @keyframes heartRise {0%{transform:translateY(0) scale(.9) rotate(0);opacity:1}100%{transform:translateY(-240px) scale(1.15) rotate(30deg);opacity:0}}
+    @media (max-width:520px){h1{font-size:1.6rem}.card{padding:18px}}
   </style>
 </head>
 <body>
+  <svg class="bg-heart" viewBox="0 0 32 29.6" aria-hidden="true" style="position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);width:1100px;height:1100px;opacity:.06;z-index:0;pointer-events:none;filter:blur(14px)">
+    <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#ff5d7a"/><stop offset="1" stop-color="#ffd166"/></linearGradient></defs>
+    <path fill="url(#g1)" d="M23.6,0c-2.7,0-5,1.5-6.6,3.9C15.4,1.5,13.1,0,10.4,0C4.7,0,0,4.7,0,10.4 C0,18.9,16,29.6,16,29.6s16-10.7,16-19.2C32,4.7,27.3,0,23.6,0z"/>
+  </svg>
+
   <canvas id="effects-layer" aria-hidden="true"></canvas>
 
-  <div class="card">
-    <h2>Debug Test</h2>
-    <p>Bu sayfa, efektlerin çalışıp çalışmadığını kontrol etmek için basit test içerir.</p>
-    <button id="toggleSecret">Sürprizi Aç / Kapat</button>
-    <div id="secretArea" class="secret" role="region">Gizli mesaj burada görünecek.</div>
-    <p style="font-size:12px;opacity:.7;margin-top:8px">DevTools → Console (F12) açıkken çalıştır.</p>
+  <div class="card" role="main" aria-label="Sürpriz kutusu">
+    <div class="year-badge" id="yearBadge">2026</div>
+    <h1>Mutlu Yıllar</h1>
+    <p class="lead">Birlikte daha nice güzel sayfalar açalım — bugün küçük bir sürpriz var.</p>
+    <div class="heart" aria-hidden="true"></div>
+    <button id="toggleSecret" aria-expanded="false" aria-controls="secretArea">Sürprizi Aç</button>
+    <div id="secretArea" class="secret" role="region" aria-label="Gizli mesaj">
+      <div class="message">
+Seninle bir yıl değil bir ömür
+Yeni bir yıl yeni bir sayfa açılıyo önümüzde, bembeyaz. Bu sayfanın her satırını
+seninle mutluluğumuzla, yaşadıklarımızla, aşkımızla doldurmak istiyorum. Sen benim
+sadece sevgilim değil en güvenli yerim, huzur kaynağım bu dünya anlam yükleyen
+birisin. Her geçen yıl seni bana daha çok bağlıyor, anılarımız artıyor ve vazgeçilmez
+kılıyor. her yıl olduğu gibi bul yılda hep seninleyim bir adım arkanda her anında
+yanında❤️
+      </div>
+    </div>
+    <footer>Sevgilerle — Senin</footer>
   </div>
 
   <script>
-    console.log('Script başlıyor');
+    // Basit hata loglama yardımcıları
+    function $log(...args){ if(window.console) console.log(...args); }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('DOMContentLoaded fired');
+    // Canvas & snow setup (sağlamlaştırıldı)
+    const canvas = document.getElementById('effects-layer');
+    if(!canvas){ console.error('Canvas bulunamadı: #effects-layer'); }
+    let ctx = null;
+    let snowParticles = [];
+    let snowAnimId = null;
 
-      const canvas = document.getElementById('effects-layer');
-      if(!canvas) { console.error('Canvas bulunamadı'); return; }
-      const ctx = canvas.getContext && canvas.getContext('2d');
-      if(!ctx) { console.error('2D context alınamadı'); return; }
-
-      function fit(){
+    function fitCanvas(){
+      try{
         const dpr = window.devicePixelRatio || 1;
         canvas.width = Math.floor(window.innerWidth * dpr);
         canvas.height = Math.floor(window.innerHeight * dpr);
         canvas.style.width = window.innerWidth + 'px';
         canvas.style.height = window.innerHeight + 'px';
+        ctx = canvas.getContext && canvas.getContext('2d');
+        if(!ctx) { console.error('2D context alınamadı'); return; }
         ctx.setTransform(dpr,0,0,dpr,0,0);
-        console.log('Canvas boyutlandırıldı', canvas.width, canvas.height, 'dpr', dpr);
+      } catch(e){
+        console.error('fitCanvas hata:', e);
       }
-      fit();
-      window.addEventListener('resize', fit);
+    }
 
-      // küçük kar parçacıkları basit animasyon
-      const particles = [];
-      for(let i=0;i<80;i++){
-        particles.push({
-          x: Math.random()*window.innerWidth,
-          y: Math.random()*window.innerHeight,
-          r: Math.random()*2+0.6,
-          vy: Math.random()*0.6+0.2,
-          vx: (Math.random()-0.5)*0.4
+    function initSnow(count = Math.max(60, Math.floor(window.innerWidth / 12))){
+      snowParticles = [];
+      for(let i=0;i<count;i++){
+        snowParticles.push({
+          x: Math.random() * window.innerWidth,
+          y: Math.random() * window.innerHeight,
+          r: Math.random() * 2.6 + 0.8,
+          vy: Math.random() * 0.6 + 0.15,
+          vx: (Math.random()-0.5) * 0.4,
+          oscillation: Math.random() * Math.PI * 2,
+          oSpeed: (Math.random() * 0.02) + 0.005,
+          alpha: Math.random()*0.6 + 0.25
         });
       }
-      let rafId = null;
-      function frame(){
-        ctx.clearRect(0,0,canvas.width,canvas.height);
-        ctx.fillStyle = '#fff';
-        const w = window.innerWidth, h = window.innerHeight;
-        for(const p of particles){
-          p.y += p.vy;
-          p.x += p.vx;
-          if(p.y > h+10){ p.y = -10; p.x = Math.random()*w; }
-          if(p.x > w+10) p.x = -10;
-          if(p.x < -10) p.x = w+10;
-          ctx.globalAlpha = 0.85;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-          ctx.fill();
-        }
-        ctx.globalAlpha = 1;
-        rafId = requestAnimationFrame(frame);
-      }
-      rafId = requestAnimationFrame(frame);
-      console.log('Kar animasyonu başlatıldı');
+    }
 
-      // buton ve gizli alan
+    function animateSnow(ts){
+      if(!ctx){ snowAnimId = requestAnimationFrame(animateSnow); return; }
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      const w = window.innerWidth, h = window.innerHeight;
+      for(let p of snowParticles){
+        p.y += p.vy;
+        p.x += p.vx + Math.sin(p.oscillation) * 0.3;
+        p.oscillation += p.oSpeed;
+        if(p.y > h + 10){ p.y = -10; p.x = Math.random() * w; }
+        if(p.x > w + 10) p.x = -10;
+        if(p.x < -10) p.x = w + 10;
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = '#fff';
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      snowAnimId = requestAnimationFrame(animateSnow);
+    }
+
+    // Başlat
+    function startSnow(){
+      fitCanvas();
+      initSnow();
+      if(snowAnimId) cancelAnimationFrame(snowAnimId);
+      snowAnimId = requestAnimationFrame(animateSnow);
+    }
+
+    window.addEventListener('resize', startSnow);
+    window.addEventListener('orientationchange', startSnow);
+    startSnow();
+
+    // Year badge
+    (function(){ const b = document.getElementById('yearBadge'); if(b) b.textContent = new Date().getFullYear(); })();
+
+    // Floating hearts
+    function spawnHeartsBurst(x, y, count = 18){
+      if(!document.body) return;
+      const colors = ['#ff5d7a','#ff8aa3','#ffd166','#ffb1e6','#ff6f91'];
+      for(let i=0;i<count;i++){
+        const el = document.createElement('div');
+        el.className = 'floating-heart';
+        el.textContent = '❤';
+        const size = Math.random() * 16 + 12;
+        el.style.fontSize = size + 'px';
+        el.style.left = (x + (Math.random()-0.5) * 120) + 'px';
+        el.style.top = (y + (Math.random()-0.5) * 40) + 'px';
+        el.style.color = colors[Math.floor(Math.random()*colors.length)];
+        const dur = 1100 + Math.random() * 800;
+        el.style.animationDuration = dur + 'ms';
+        const dx = (Math.random()-0.5) * 90;
+        el.style.transform = `translateX(${dx}px) translateY(0) scale(${0.9 + Math.random()*0.5}) rotate(${(Math.random()-0.5)*40}deg)`;
+        document.body.appendChild(el);
+        el.addEventListener('animationend', () => el.remove());
+      }
+    }
+
+    // Typewriter & toggle
+    (function(){
       const btn = document.getElementById('toggleSecret');
       const secret = document.getElementById('secretArea');
-      if(!btn || !secret){ console.error('Buton veya gizli alan bulunamadı'); return; }
-      btn.addEventListener('click', () => {
-        const open = secret.classList.toggle('show');
-        console.log('Butona tıklandı — open:', open);
-        if(open){
-          // yüzen kalp (DOM) örneği
-          const heart = document.createElement('div');
-          heart.textContent = '❤';
-          heart.style.position = 'fixed';
-          heart.style.left = (window.innerWidth/2 + (Math.random()-0.5)*120) + 'px';
-          heart.style.top = (window.innerHeight/2 + (Math.random()-0.5)*40) + 'px';
-          heart.style.fontSize = (12 + Math.random()*20) + 'px';
-          heart.style.zIndex = 3;
-          heart.style.transition = 'transform 1s ease-out, opacity 1s ease-out';
-          document.body.appendChild(heart);
-          requestAnimationFrame(() => {
-            heart.style.transform = 'translateY(-220px) scale(1.2)';
-            heart.style.opacity = '0';
-          });
-          setTimeout(()=> heart.remove(), 1100);
-        }
-      });
+      if(!btn || !secret) { console.error('Buton veya gizli alan bulunamadı'); return; }
+      const messageEl = secret.querySelector('.message');
+      if(!messageEl){ console.error('.message bulunamadı'); return; }
+      const originalText = messageEl.textContent.trim();
+      let typingTimer = null;
 
-      console.log('Event listenerlar eklendi, test hazır.');
-    });
+      function typeWriter(text, speed = 22){
+        clearInterval(typingTimer);
+        messageEl.textContent = '';
+        let i = 0;
+        return new Promise(resolve => {
+          typingTimer = setInterval(() => {
+            messageEl.textContent += text.charAt(i);
+            i++;
+            messageEl.parentElement.scrollTop = messageEl.parentElement.scrollHeight;
+            if(i >= text.length){
+              clearInterval(typingTimer);
+              typingTimer = null;
+              resolve();
+            }
+          }, speed);
+        });
+      }
+
+      async function toggle(){
+        const open = secret.classList.toggle('show');
+        btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        btn.textContent = open ? 'Sürprizi Kapat' : 'Sürprizi Aç';
+
+        if(open){
+          const rect = document.querySelector('.card').getBoundingClientRect();
+          const cx = rect.left + rect.width/2;
+          const cy = rect.top + rect.height/2 - 20;
+          spawnHeartsBurst(cx, cy, 24);
+
+          await typeWriter(originalText, 20);
+
+          secret.setAttribute('tabindex','-1');
+          secret.focus({preventScroll:true});
+        } else {
+          if(typingTimer) clearInterval(typingTimer);
+          messageEl.textContent = originalText;
+        }
+      }
+
+      btn.addEventListener('click', toggle);
+      btn.addEventListener('keyup', (e)=> { if(e.key === 'Enter' || e.key === ' ') toggle(); });
+    })();
+
+    $log('Script yüklendi — hata varsa konsolda görünecektir.');
   </script>
 </body>
 </html>

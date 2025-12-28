@@ -8,9 +8,12 @@
     :root{
       --bg1: #071026;
       --bg2: #031220;
+      --card:#07172a88;
       --accent:#ff5d7a;
+      --accent-2:#ffd166;
       --muted:#cbd5e1cc;
     }
+    /* Reset */
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
@@ -27,39 +30,154 @@
       overflow:hidden;
     }
 
-    .card{
-      width:92vw;max-width:880px;padding:28px;border-radius:20px;
-      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      box-shadow:0 20px 60px rgba(2,6,23,0.6);text-align:center;position:relative;z-index:2;
+    /* Big decorative heart in background (center) */
+    .bg-heart{
+      position:fixed;
+      left:50%;
+      top:40%;
+      transform:translate(-50%,-50%) scale(1);
+      width:1100px;
+      height:1100px;
+      opacity:0.06;
+      z-index:0;
+      pointer-events:none;
+      filter: blur(14px);
+      animation: pulseHeart 5000ms infinite ease-in-out;
     }
-    .year-badge{position:absolute;right:18px;top:18px;background:linear-gradient(90deg,var(--accent),#ff2a6b);padding:8px 12px;border-radius:999px;font-weight:700;color:white}
-    h1{margin:8px 0 6px}
-    .lead{color:var(--muted)}
-    .heart{width:120px;height:120px;margin:8px auto 6px}
-    button{background:linear-gradient(90deg,var(--accent),#ff2a6b);border:0;padding:12px 20px;border-radius:12px;color:white;cursor:pointer}
-    .secret{margin-top:18px;padding:18px;border-radius:14px;background:rgba(255,255,255,0.02);display:none;color:var(--muted);line-height:1.6;max-height:60vh;overflow:auto}
+    @keyframes pulseHeart{
+      0%{transform:translate(-50%,-50%) scale(1);opacity:0.06}
+      50%{transform:translate(-50%,-50%) scale(1.03);opacity:0.09}
+      100%{transform:translate(-50%,-50%) scale(1);opacity:0.06}
+    }
+
+    /* Card */
+    .card{
+      width:92vw;
+      max-width:880px;
+      padding:28px;
+      border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      box-shadow:0 20px 60px rgba(2,6,23,0.6);
+      text-align:center;
+      position:relative;
+      z-index:2;
+      overflow:visible;
+      backdrop-filter: blur(6px) saturate(120%);
+    }
+
+    /* Top right year badge */
+    .year-badge{
+      position:absolute;
+      right:18px;
+      top:18px;
+      background:linear-gradient(90deg,var(--accent),#ff2a6b);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:700;
+      box-shadow:0 6px 18px rgba(255,93,122,0.16);
+      color:white;
+      font-size:0.95rem;
+    }
+
+    h1{margin:8px 0 6px;font-size:2.2rem;letter-spacing:0.4px}
+    p.lead{margin:0 0 16px;color:var(--muted);font-size:1.05rem}
+
+    /* Heart + button row */
+    .heart{
+      width:120px;height:120px;margin:8px auto 6px;position:relative;transform:scale(1);transition:transform .25s ease;
+    }
+    .heart:before,.heart:after{
+      content:"";position:absolute;left:40px;top:0;width:50px;height:80px;background:linear-gradient(180deg,var(--accent),#ff2a6b);
+      border-radius:50px 50px 0 0;transform-origin:bottom center;
+    }
+    .heart:after{left:0;transform:rotate(-45deg)}
+    .heart:before{left:40px;transform:rotate(45deg)}
+
+    button{
+      background:linear-gradient(90deg,var(--accent),#ff2a6b);
+      border:0;padding:12px 20px;border-radius:12px;color:white;font-weight:700;font-size:1rem;cursor:pointer;
+      box-shadow:0 10px 30px rgba(255,93,122,0.16);
+      transition:transform .18s ease, box-shadow .18s ease, opacity .18s;
+    }
+    button:active{transform:translateY(2px)}
+    .secret{
+      margin-top:18px;padding:18px;border-radius:14px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      display:none;text-align:left;color:var(--muted);line-height:1.6;
+      max-height:60vh;overflow:auto;
+    }
     .secret.show{display:block}
-    .secret .message{color:#fff;white-space:pre-wrap}
-    #effects-layer{position:fixed;inset:0;z-index:1;pointer-events:none}
-    .floating-heart{position:fixed;pointer-events:none;z-index:4;font-size:18px;transform-origin:center;will-change:transform,opacity;user-select:none;text-shadow:0 2px 6px rgba(0,0,0,0.35);animation: heartRise linear forwards}
-    @keyframes heartRise {0%{transform:translateY(0) scale(.9) rotate(0);opacity:1}100%{transform:translateY(-240px) scale(1.15) rotate(30deg);opacity:0}}
-    @media (max-width:520px){h1{font-size:1.6rem}.card{padding:18px}}
+
+    .secret .message{
+      color:#fff;
+      font-size:1.02rem;
+      white-space:pre-wrap;
+    }
+
+    footer{margin-top:12px;color:#9ca3af;font-size:0.86rem}
+
+    /* Countdown */
+    .countdown{
+      margin-top:8px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      font-weight:700;
+      color:var(--muted);
+    }
+    .countdown .item{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:10px;min-width:56px}
+
+    /* Sparkle */
+    .sparkle{
+      position:absolute;
+      width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.9);
+      box-shadow:0 0 18px rgba(255,255,255,0.5);
+      opacity:0;pointer-events:none;
+      transform:translate(-50%,-50%) scale(0.6);
+    }
+    .sparkle.show{animation: sparkleAnim .9s ease forwards}
+    @keyframes sparkleAnim{
+      0%{opacity:1;transform:translate(-50%,-50%) scale(0.6)}
+      100%{opacity:0;transform:translate(-50%,-120%) scale(1.6)}
+    }
+
+    .fwk{position:fixed;left:0;top:0;pointer-events:none;z-index:3}
+
+    /* small responsive */
+    @media (max-width:520px){
+      h1{font-size:1.6rem}
+      .heart{width:86px;height:86px}
+      .card{padding:18px}
+      .secret{font-size:0.95rem}
+    }
   </style>
 </head>
 <body>
-  <svg class="bg-heart" viewBox="0 0 32 29.6" aria-hidden="true" style="position:fixed;left:50%;top:40%;transform:translate(-50%,-50%);width:1100px;height:1100px;opacity:.06;z-index:0;pointer-events:none;filter:blur(14px)">
-    <defs><linearGradient id="g1" x1="0" x2="1"><stop offset="0" stop-color="#ff5d7a"/><stop offset="1" stop-color="#ffd166"/></linearGradient></defs>
-    <path fill="url(#g1)" d="M23.6,0c-2.7,0-5,1.5-6.6,3.9C15.4,1.5,13.1,0,10.4,0C4.7,0,0,4.7,0,10.4 C0,18.9,16,29.6,16,29.6s16-10.7,16-19.2C32,4.7,27.3,0,23.6,0z"/>
+  <!-- Background blurred heart -->
+  <svg class="bg-heart" viewBox="0 0 32 29.6" aria-hidden="true">
+    <path fill="url(#g1)" d="M23.6,0c-2.7,0-5,1.5-6.6,3.9C15.4,1.5,13.1,0,10.4,0C4.7,0,0,4.7,0,10.4
+      C0,18.9,16,29.6,16,29.6s16-10.7,16-19.2C32,4.7,27.3,0,23.6,0z"/>
+    <defs>
+      <linearGradient id="g1" x1="0" x2="1">
+        <stop offset="0" stop-color="#ff5d7a"/>
+        <stop offset="1" stop-color="#ffd166"/>
+      </linearGradient>
+    </defs>
   </svg>
 
+  <!-- Canvas layer for snow / hearts / confetti (placeholder) -->
   <canvas id="effects-layer" aria-hidden="true"></canvas>
 
   <div class="card" role="main" aria-label="Sürpriz kutusu">
-    <div class="year-badge" id="yearBadge">2026</div>
+    <div class="year-badge" id="yearBadge" aria-hidden="true">2026</div>
+
     <h1>Mutlu Yıllar</h1>
     <p class="lead">Birlikte daha nice güzel sayfalar açalım — bugün küçük bir sürpriz var.</p>
+
     <div class="heart" aria-hidden="true"></div>
+
     <button id="toggleSecret" aria-expanded="false" aria-controls="secretArea">Sürprizi Aç</button>
+
     <div id="secretArea" class="secret" role="region" aria-label="Gizli mesaj">
       <div class="message">
 Seninle bir yıl değil bir ömür
@@ -71,155 +189,35 @@ kılıyor. her yıl olduğu gibi bul yılda hep seninleyim bir adım arkanda her
 yanında❤️
       </div>
     </div>
+
     <footer>Sevgilerle — Senin</footer>
   </div>
 
   <script>
-    // Basit hata loglama yardımcıları
-    function $log(...args){ if(window.console) console.log(...args); }
+    // Yılı otomatik güncelle
+    (function(){
+      const y = new Date().getFullYear();
+      const badge = document.getElementById('yearBadge');
+      if (badge) badge.textContent = y;
+    })();
 
-    // Canvas & snow setup (sağlamlaştırıldı)
-    const canvas = document.getElementById('effects-layer');
-    if(!canvas){ console.error('Canvas bulunamadı: #effects-layer'); }
-    let ctx = null;
-    let snowParticles = [];
-    let snowAnimId = null;
-
-    function fitCanvas(){
-      try{
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = Math.floor(window.innerWidth * dpr);
-        canvas.height = Math.floor(window.innerHeight * dpr);
-        canvas.style.width = window.innerWidth + 'px';
-        canvas.style.height = window.innerHeight + 'px';
-        ctx = canvas.getContext && canvas.getContext('2d');
-        if(!ctx) { console.error('2D context alınamadı'); return; }
-        ctx.setTransform(dpr,0,0,dpr,0,0);
-      } catch(e){
-        console.error('fitCanvas hata:', e);
-      }
-    }
-
-    function initSnow(count = Math.max(60, Math.floor(window.innerWidth / 12))){
-      snowParticles = [];
-      for(let i=0;i<count;i++){
-        snowParticles.push({
-          x: Math.random() * window.innerWidth,
-          y: Math.random() * window.innerHeight,
-          r: Math.random() * 2.6 + 0.8,
-          vy: Math.random() * 0.6 + 0.15,
-          vx: (Math.random()-0.5) * 0.4,
-          oscillation: Math.random() * Math.PI * 2,
-          oSpeed: (Math.random() * 0.02) + 0.005,
-          alpha: Math.random()*0.6 + 0.25
-        });
-      }
-    }
-
-    function animateSnow(ts){
-      if(!ctx){ snowAnimId = requestAnimationFrame(animateSnow); return; }
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      const w = window.innerWidth, h = window.innerHeight;
-      for(let p of snowParticles){
-        p.y += p.vy;
-        p.x += p.vx + Math.sin(p.oscillation) * 0.3;
-        p.oscillation += p.oSpeed;
-        if(p.y > h + 10){ p.y = -10; p.x = Math.random() * w; }
-        if(p.x > w + 10) p.x = -10;
-        if(p.x < -10) p.x = w + 10;
-        ctx.globalAlpha = p.alpha;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-        ctx.fillStyle = '#fff';
-        ctx.fill();
-      }
-      ctx.globalAlpha = 1;
-      snowAnimId = requestAnimationFrame(animateSnow);
-    }
-
-    // Başlat
-    function startSnow(){
-      fitCanvas();
-      initSnow();
-      if(snowAnimId) cancelAnimationFrame(snowAnimId);
-      snowAnimId = requestAnimationFrame(animateSnow);
-    }
-
-    window.addEventListener('resize', startSnow);
-    window.addEventListener('orientationchange', startSnow);
-    startSnow();
-
-    // Year badge
-    (function(){ const b = document.getElementById('yearBadge'); if(b) b.textContent = new Date().getFullYear(); })();
-
-    // Floating hearts
-    function spawnHeartsBurst(x, y, count = 18){
-      if(!document.body) return;
-      const colors = ['#ff5d7a','#ff8aa3','#ffd166','#ffb1e6','#ff6f91'];
-      for(let i=0;i<count;i++){
-        const el = document.createElement('div');
-        el.className = 'floating-heart';
-        el.textContent = '❤';
-        const size = Math.random() * 16 + 12;
-        el.style.fontSize = size + 'px';
-        el.style.left = (x + (Math.random()-0.5) * 120) + 'px';
-        el.style.top = (y + (Math.random()-0.5) * 40) + 'px';
-        el.style.color = colors[Math.floor(Math.random()*colors.length)];
-        const dur = 1100 + Math.random() * 800;
-        el.style.animationDuration = dur + 'ms';
-        const dx = (Math.random()-0.5) * 90;
-        el.style.transform = `translateX(${dx}px) translateY(0) scale(${0.9 + Math.random()*0.5}) rotate(${(Math.random()-0.5)*40}deg)`;
-        document.body.appendChild(el);
-        el.addEventListener('animationend', () => el.remove());
-      }
-    }
-
-    // Typewriter & toggle
+    // Sürprizi aç / kapat
     (function(){
       const btn = document.getElementById('toggleSecret');
       const secret = document.getElementById('secretArea');
-      if(!btn || !secret) { console.error('Buton veya gizli alan bulunamadı'); return; }
-      const messageEl = secret.querySelector('.message');
-      if(!messageEl){ console.error('.message bulunamadı'); return; }
-      const originalText = messageEl.textContent.trim();
-      let typingTimer = null;
+      const heart = document.querySelector('.heart');
 
-      function typeWriter(text, speed = 22){
-        clearInterval(typingTimer);
-        messageEl.textContent = '';
-        let i = 0;
-        return new Promise(resolve => {
-          typingTimer = setInterval(() => {
-            messageEl.textContent += text.charAt(i);
-            i++;
-            messageEl.parentElement.scrollTop = messageEl.parentElement.scrollHeight;
-            if(i >= text.length){
-              clearInterval(typingTimer);
-              typingTimer = null;
-              resolve();
-            }
-          }, speed);
-        });
-      }
-
-      async function toggle(){
+      function toggle(){
         const open = secret.classList.toggle('show');
         btn.setAttribute('aria-expanded', open ? 'true' : 'false');
         btn.textContent = open ? 'Sürprizi Kapat' : 'Sürprizi Aç';
-
+        // küçük animasyon
         if(open){
-          const rect = document.querySelector('.card').getBoundingClientRect();
-          const cx = rect.left + rect.width/2;
-          const cy = rect.top + rect.height/2 - 20;
-          spawnHeartsBurst(cx, cy, 24);
-
-          await typeWriter(originalText, 20);
-
-          secret.setAttribute('tabindex','-1');
-          secret.focus({preventScroll:true});
+          heart.style.transform = 'scale(1.06)';
+          setTimeout(()=> heart.style.transform = 'scale(1)', 600);
         } else {
-          if(typingTimer) clearInterval(typingTimer);
-          messageEl.textContent = originalText;
+          heart.style.transform = 'scale(0.98)';
+          setTimeout(()=> heart.style.transform = 'scale(1)', 200);
         }
       }
 
@@ -227,7 +225,20 @@ yanında❤️
       btn.addEventListener('keyup', (e)=> { if(e.key === 'Enter' || e.key === ' ') toggle(); });
     })();
 
-    $log('Script yüklendi — hata varsa konsolda görünecektir.');
+    // Basit resize ile canvas boyutlandırma (efekt eklemek istersen buraya ekleyebilirsin)
+    (function(){
+      const canvas = document.getElementById('effects-layer');
+      function fit(){
+        canvas.width = window.innerWidth * devicePixelRatio;
+        canvas.height = window.innerHeight * devicePixelRatio;
+        canvas.style.width = window.innerWidth + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        const ctx = canvas.getContext('2d');
+        if(ctx) ctx.clearRect(0,0,canvas.width,canvas.height);
+      }
+      window.addEventListener('resize', fit);
+      fit();
+    })();
   </script>
 </body>
 </html>

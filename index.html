@@ -1,24 +1,106 @@
-<figure class="photo-wrap" aria-hidden="false">
-  <!-- Gömülü görüntü (zaten base64 ile gömülmüştür) -->
-  <img id="photo" alt="Sana özel fotoğraf" loading="lazy"
-    src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAQEBIQEA8QEA8PDw8PDw8QEA8QDxAQFRUWFhURFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMsNygtLisBCgoKDg0OGxAQGy0lICUtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAKABJwMBIgACEQEDEQH/xAAbAAEAAgMBAQAAAAAAAAAAAAAABQYDBAcBAv/EADkQAAEDAgQDBQYEBwAAAAAAAAECAwQAEQUSIRMxQVEiYXEycYGRMjNCUrHB0fAVJHLh8RUzQ3KC/8QAGgEBAQEBAQEBAAAAAAAAAAAAAAECBAMFBv/EACURAQEBAAICAQUBAAAAAAAAAAABAhEDIRIxQRMiUWEUMnGB8P/aAAwDAQACEQMRAD8A9+iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACuZ1YbVwM1r0sWlncE6Y2o8g5Ykng9a1r1t3e2ku7s7m2k0hQSCYkYyR7V7fU7aXk1z6fM6rIskqysQqQSBt6g9a4/wBp1qf2V2a6m1uZ7a7s5S2c7aREZB3J7k9q9d6eXw9rNt7p1u5k8x2q1hjsM8bqccH1r6X8b2Vt9N1m7u7hYJYpQyqfM52nH1r0v4b0m3u9s7bW2a7sY7Y5Z2VQeQxO/WvNfF1s9v0u3u7v7S1kkuMZVgkZyD1r9BfDqf2rW7u9rZ7m3j2kLk0c8s8g5J/GvJvD2u6t9M7W9u7bRr7a3c3kVYZQMnOeK9k+Ff2f4k0m6u9s7bW2m7sY7Z4Z2VQeQxO/WvNfF1s9v0u3u7v7S1kkuMZVgkZyD1r9BfDqf2rW7u9rZ7m3j2kLk0c8s8g5J/GvJvD2u6t9M7W9u7bRr7a3c3kVYZQMnOeK9k+Ff2f4k0m6u9s7bW2m7sY7Z4Z2VQeQxO/WvNfF1s9v0u3u7v7S1kkuMZVgkZyD/2Q==">
-</figure>
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Sürpriz 🎁</title>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#ff5d7a}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:
+      radial-gradient(circle at 10% 10%, rgba(255,93,122,0.08), transparent 10%),
+      linear-gradient(180deg,#071026 0%, #071026 60%, #031220 100%);font-family:Inter,system-ui,Segoe UI,Arial;color:#fff}
+    .card{width:92vw;max-width:760px;padding:36px;border-radius:20px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));box-shadow:0 10px 30px rgba(2,6,23,0.6);text-align:center;position:relative;overflow:hidden}
+    h1{margin:0 0 8px;font-size:2.2rem;letter-spacing:0.4px}
+    p.lead{margin:0 0 18px;color:#d1d5db}
+    .heart{
+      width:140px;height:140px;margin:18px auto 6px;position:relative;transform:scale(1);
+      transition:transform .25s ease;
+    }
+    .heart:before,.heart:after{
+      content:"";position:absolute;left:50px;top:0;width:50px;height:80px;background:linear-gradient(180deg,var(--accent),#ff2a6b);
+      border-radius:50px 50px 0 0;transform-origin:bottom center;
+    }
+    .heart:after{left:0;transform:rotate(-45deg)}
+    .heart:before{left:40px;transform:rotate(45deg)}
+    button{background:var(--accent);border:0;padding:12px 20px;border-radius:12px;color:white;font-weight:600;font-size:1rem;cursor:pointer;box-shadow:0 6px 16px rgba(255,93,122,0.18)}
+    .secret{margin-top:18px;padding:16px;border-radius:12px;background:rgba(255,255,255,0.02);display:none}
+    .close{position:absolute;right:14px;top:12px;opacity:0.6;font-size:0.9rem}
+    .confetti-piece{position:absolute;width:10px;height:14px;opacity:0.95;border-radius:2px;will-change:transform,top,left}
+    footer{margin-top:18px;color:#9ca3af;font-size:0.86rem}
+    /* small responsive */
+    @media (max-width:420px){.heart{width:110px;height:110px}h1{font-size:1.6rem}}
+  </style>
+</head>
+<body>
+  <div class="card" role="main" aria-label="Sürpriz kutusu">
+    <div class="close" id="closeBtn" title="Kapat" style="display:none">×</div>
+    <div class="heart" id="heart" aria-hidden="true"></div>
+   <h1>Mutlu Yıllar Sevgilim!</h1>
+    <p class="lead">Bu linki açtığın için teşekkür ederim. Hazır mısın?</p>
+    <button id="openBtn">Evet, bana göster!</button>
 
-<div class="heart" id="heart" aria-hidden="true" title="Kalp"></div>
+    <div class="secret" id="secret">
+      <h2 style="margin:0 0 8px">Sana bir şey söylemek istiyorum…</h2>
+      <p style="margin:0 0 12px;font-size:1.05rem">Seninle bir yıl değil bir ömür
+        Yeni bir yıl yeni bir sayfa açılıyo önümüzde, bembeyaz. Bu sayfanın her satırını
+seninle mutluluğumuzla, yaşadıklarımızla, aşkımızla doldurmak istiyorum. Sen benim
+sadece sevgilim değil en güvenli yerim, huzur kaynağım bu dünya anlam yükleyen
+birisin. Her geçen yıl seni bana daha çok bağlıyor, anılarımız artıyor ve vazgeçilmez
+kılıyor. her yıl olduğu gibi bul yılda hep seninleyim bir adım arkanda her anında
+yanında❤️</p>
+      <p style="margin:0">— <strong>Ben</strong></p>
+      <footer>Bu linki paylaşma istersen dikkatli ol.</footer>
+    </div>
+  </div>
 
-<h1>Mutlu Yıllar Sevgilim!</h1>
-<p class="lead">Bu linki açtığın için çok teşekkürler. Hazır mısın? Yeni yılda birlikte olmanın mutluluğunu paylaşmak istiyorum.</p>
+  <script>
+    // Basit konfeti fonksiyonu (kalp parçacıkları)
+    const colors = ['#ff5d7a','#ffd166','#6ee7b7','#60a5fa','#c084fc'];
+    function makeConfetti(x,y){
+      const n = 24;
+      for(let i=0;i<n;i++){
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        const w=8+Math.random()*8, h=10+Math.random()*10;
+        el.style.width = w+'px'; el.style.height = h+'px';
+        el.style.left = (x - w/2) + 'px';
+        el.style.top = (y - h/2) + 'px';
+        el.style.background = colors[Math.floor(Math.random()*colors.length)];
+        el.style.transform = `rotate(${Math.random()*360}deg)`;
+        document.body.appendChild(el);
+        // animate
+        const dx = (Math.random()-0.5)*600;
+        const dy = 600 + Math.random()*200;
+        const rot = (Math.random()-0.5)*720;
+        el.animate([
+          { transform: `translate(0px,0px) rotate(0deg)`, opacity:1 },
+          { transform: `translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0.1 }
+        ], {
+          duration: 1200 + Math.random()*1000,
+          easing: 'cubic-bezier(.17,.67,.4,1)'
+        });
+        setTimeout(()=>el.remove(), 2400);
+      }
+    }
 
-<div style="margin-top:12px">
-  <button id="openBtn" aria-controls="secret">Evet, bana göster!</button>
-</div>
+    const openBtn = document.getElementById('openBtn');
+    const secret = document.getElementById('secret');
+    const heart = document.getElementById('heart');
 
-<div class="secret" id="secret" role="region" aria-hidden="true">
-  <h2 style="margin:0 0 8px">Sana bir şey söylemek istiyorum…</h2>
-  <p style="margin:0 0 12px;font-size:1.05rem;line-height:1.45">
-    Seninle bir yıl değil bir ömür... Yeni bir yıl yeni umutlar, yeni anılar demek. Bu sayfanın her satırını
-    seninle mutluluğumuzla doldurmak istiyorum. Sen benim en güvenli yerimsin. Her anında yanında olmaya devam edeceğim. ❤️
-  </p>
-  <p style="margin:0">— <strong>Ben</strong></p>
-  <footer>Bu linki paylaşırken dikkatli ol.</footer>
-</div>
+    openBtn.addEventListener('click', e=>{
+      secret.style.display = 'block';
+      heart.style.transform = 'scale(1.08)';
+      makeConfetti(window.innerWidth/2, 180);
+      // küçük titreşim
+      document.body.animate([{transform:'translateY(0)'},{transform:'translateY(-6px)'},{transform:'translateY(0)'}],{duration:420,iterations:1});
+    });
+
+    // Fareyle kalbin üzerine gelince konfeti
+    heart.addEventListener('mouseenter', e=>{
+      makeConfetti(e.clientX, e.clientY);
+      heart.style.transform = 'scale(1.08)';
+    });
+    heart.addEventListener('mouseleave', ()=>heart.style.transform = 'scale(1)');
+  </script>
+</body>
+</html>
